@@ -2,25 +2,36 @@
   <div class="app">
     <transition mode="out-in" name="fade" appear>
       <div class="app-card">
-        <span class="title">Currency Converter</span>
+        <span class="title">Conversion History</span>
         <v-divider class="py-2"></v-divider>
-        <base-converter :currencies="currencies" />
+        <conversion-history :history="history" />
       </div>
     </transition>
   </div>
 </template>
 
 <script>
-  const baseConverter = () => import('../components/BaseConverter');
+  const conversionHistory = () => import('../components/ConversionHistory');
 
   export default {
-    name: 'Home',
+    name: 'History',
     components: {
-      baseConverter,
+      conversionHistory
     },
     data: () => ({
-      currencies: JSON.parse(localStorage.getItem('currencies')),
+      history: [],
     }),
+    watch: {
+      '$store.state.conversionHistory': {
+        handler: 'updateHistory',
+        immediate: true,
+      }
+    },
+    methods: {
+      updateHistory(history) {
+        this.history = history;
+      },
+    },
   }
 </script>
 
