@@ -35,7 +35,7 @@
                   color="#05b8a9"
                   icon
                   large
-                  :disabled="amount === '' || firstSelect === null || secondSelect === null"
+                  :disabled="amount === '' || firstSelect === null || secondSelect === null || !/^\d+$/.test(amount)"
                   @click="convert"
                 >
                   <v-icon>mdi-sync</v-icon>
@@ -84,7 +84,7 @@
       secondSelect: { code: 'USD', name: 'U.S. Dollar' },
       amount: 1,
       result: null,
-      rules: [v => /^\d+$/.test(v) || 'Amount must be a number'],
+      rules: [v => /^\d+$/.test(v) || 'Amount must be an integer'],
       allRates: [],
       canShowResult: false,
     }),
@@ -125,7 +125,7 @@
         this.result = result;
         this.canShowResult = true;
 
-        this.addToConversionHistory()
+        this.addToConversionHistory();
       },
       addToConversionHistory() {
         this.$store.commit("setConversionHistory", {
